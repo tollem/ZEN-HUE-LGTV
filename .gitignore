@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.taste-skill/
+.DS_Store
+*.log
+bridge.json
+.env
+.env.*

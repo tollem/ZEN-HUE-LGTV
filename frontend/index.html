@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lumières</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="topbar">
+      <div class="identity"><span class="mark" aria-hidden="true"></span><span>Lumières</span></div>
+      <div class="connection"><span id="connection-dot" class="connection-dot"></span><span id="connection-label">Connexion au pont…</span></div>
+      <button class="text-button" id="refresh" type="button">Actualiser</button>
+    </header>
+    <main id="main" aria-live="polite"></main>
+    <div id="toast" class="toast" aria-live="polite"></div>
+    <footer class="foot"><span>Utilisez les flèches et OK de la télécommande</span><span id="updated"></span></footer>
+  </div>
+  <script src="webOSTVjs/webOSTV.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

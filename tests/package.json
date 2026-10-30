@@ -1,0 +1,13 @@
+{
+  "name": "hue-tv-browser-tests",
+  "private": true,
+  "scripts": {
+    "test": "node live-preview.test.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

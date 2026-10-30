@@ -1,0 +1,12 @@
+{
+  "id": "com.samuel.huetv",
+  "version": "1.3.2",
+  "vendor": "Samuel",
+  "type": "web",
+  "main": "index.html",
+  "title": "Lumières",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "disableBackHistoryAPI": true,
+  "uiRevision": 2
+}
