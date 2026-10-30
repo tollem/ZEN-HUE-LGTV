@@ -10,6 +10,7 @@
   var toastTimer;
   var exitArmedAt = null;
   var exitHint = 'Appuyez à nouveau sur Retour pour quitter.';
+  var exitDialog = null, exitPreviousFocus = null;
   // A preview session keeps its original state until it is safely restored or kept.
   var wheelDraft = null;
   var wheelSession = null;
@@ -77,6 +78,21 @@
     window.clearTimeout(toastTimer); toastTimer = window.setTimeout(function(){toast.classList.remove('visible');},duration || 4500);
   }
   function disarmExit() { if(exitArmedAt!==null){exitArmedAt=null;if(toast.textContent===exitHint)toast.classList.remove('visible');} }
+  function dismissExitDialog() {
+    if(!exitDialog)return;
+    exitDialog.remove();exitDialog=null;
+    if(exitPreviousFocus && document.contains(exitPreviousFocus))exitPreviousFocus.focus();
+    else {var first=main.querySelector('button:not([disabled]),input:not([disabled])');if(first)first.focus();}
+    exitPreviousFocus=null;
+  }
+  function showExitDialog() {
+    if(exitDialog)return;
+    exitPreviousFocus=document.activeElement;
+    exitDialog=document.createElement('div');exitDialog.className='color-overlay';
+    exitDialog.innerHTML='<section class="color-dialog scene-dialog" role="dialog" aria-modal="true" aria-labelledby="exit-title"><div class="color-header"><div><h2 id="exit-title">Quitter l’application ?</h2></div></div><div class="scene-dialog-actions exit-dialog-actions"><button class="soft-button" type="button" data-exit="cancel">Annuler</button><button class="pill" type="button" data-exit="confirm">Quitter</button></div></section>';
+    exitDialog.addEventListener('click',function(e){var button=e.target.closest('button[data-exit]');if(!button)return;if(button.getAttribute('data-exit')==='cancel')dismissExitDialog();else if(button.getAttribute('data-exit')==='confirm')window.close();});
+    document.body.appendChild(exitDialog);exitDialog.querySelector('[data-exit="cancel"]').focus();
+  }
   document.addEventListener('click',disarmExit,true);
   function getSelected() { return state.rooms.find(function(r){return r.id === state.currentRoom;}) || null; }
   function roomLights(room) { var ids=(room && Array.isArray(room.lights))?room.lights:[]; return state.lights.filter(function(l){return ids.indexOf(l.id)>=0;}); }
@@ -387,13 +403,14 @@
     if(isBack){
       e.preventDefault();
       if(e.repeat)return;
+      if(exitDialog){dismissExitDialog();return;}
       if(recovery){disarmExit();return;}
       if(state.colorLight){disarmExit();cancelWheel();return;}
       if(state.sceneRoom){disarmExit();state.sceneRoom=null;render();restoreFocus('open-scene');return;}
       if(state.view==='automations'){disarmExit();state.view='lights';render();restoreFocus('show-automations');return;}
       if(e.keyCode===461){
         var now=Date.now();
-        if(exitArmedAt!==null && now-exitArmedAt<=2500){disarmExit();if(window.webOS && typeof window.webOS.platformBack==='function')window.webOS.platformBack();}
+        if(exitArmedAt!==null && now-exitArmedAt<=2500){disarmExit();showExitDialog();}
         else {exitArmedAt=now;notify(exitHint,false,2500);}
       }
       return;
@@ -413,7 +430,7 @@
     }
     if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].indexOf(arrowKey)<0)return;
     if(document.activeElement && document.activeElement.tagName==='INPUT')return;
-    var root=(state.colorLight||state.sceneRoom||recovery)?document.querySelector('.color-dialog'):document;
+    var root=exitDialog||((state.colorLight||state.sceneRoom||recovery)?document.querySelector('.color-dialog'):document);
     var els=Array.prototype.slice.call(root.querySelectorAll('button:not([disabled]),input:not([disabled])')).filter(function(x){var q=x.getBoundingClientRect();return q.width>0&&q.height>0;});
     var current=document.activeElement;if(els.indexOf(current)<0){if(els[0])els[0].focus();e.preventDefault();return;}
     var a=current.getBoundingClientRect(),ax=a.left+a.width/2,ay=a.top+a.height/2,vertical=arrowKey==='ArrowUp'||arrowKey==='ArrowDown',sign=(arrowKey==='ArrowUp'||arrowKey==='ArrowLeft')?-1:1;

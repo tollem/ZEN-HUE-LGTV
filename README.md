@@ -64,4 +64,4 @@ ares-package -o dist frontend service/com.samuel.huetv.service
 
 Le service est limité à l'identité du pont renseignée dans `bridge.js`.
 
-L'interface inclut la bibliothèque officielle LG webOSTV.js 1.2.13 (licence Apache 2.0, dans `frontend/webOSTVjs/`) pour la gestion du bouton Retour.
+L'interface inclut la bibliothèque officielle LG webOSTV.js 1.2.13 (licence Apache 2.0, dans `frontend/webOSTVjs/`).
