@@ -1,12 +1,31 @@
 # ZEN HUE LGTV — Lumières pour webOS
 
-Application locale pour commander un pont Philips Hue Bridge Pro depuis une TV LG webOS. Elle affiche les pièces, les lampes et les scènes existantes ; elle permet de changer l'état, la luminosité, la couleur et le blanc des lampes compatibles. L'interface fonctionne à la télécommande et au pointeur.
+**Lumières** est une application pour piloter son éclairage Philips Hue depuis une TV LG webOS, avec la télécommande ou son pointeur. Elle communique avec le pont Hue sur le réseau local, après association par le bouton du pont.
+
+## Fonctions
+
+- Afficher les pièces et leurs lampes, les allumer ou les éteindre et régler leur luminosité.
+- Régler la couleur ou la température du blanc sur les lampes compatibles, avec un aperçu en direct et la possibilité d'annuler.
+- Activer les scènes existantes et enregistrer une ambiance statique à partir de l'état d'une pièce.
+- Activer ou désactiver les automatisations Hue existantes prises en charge.
+
+La création et la modification des horaires d'automatisation restent à effectuer dans l'application Hue. Les effets animés et dégradés ne sont pas enregistrés dans les ambiances statiques.
+
+## Matériel testé
+
+- **TV :** LG OLED65C28LB, webOS 26, version système indiquée 11.2.0-3704.
+- **Pont :** Philips Hue Bridge Pro, sur le même réseau local que la TV.
+- **Installation utilisée pour les tests :** TV rootée avec Homebrew Channel et service JavaScript local installé.
+
+Les autres modèles de TV, versions de webOS et ponts Hue n'ont pas été vérifiés. Le dépôt contient le code source, pas un paquet universel prêt à installer : la configuration du pont est nécessaire avant la construction, comme indiqué plus bas.
 
 ## Utilisation
 
 Ouvrir **Lumières** depuis la liste des applications de la TV. Lors de la première association, appuyer sur le bouton physique du pont, puis choisir **Associer** sur la TV. L’adresse peut être modifiée si elle change. Le service accepte uniquement le pont Hue configuré avant la construction.
 
 Pour régler une lampe, ouvrir **Couleur**. Le disque des couleurs apparaît uniquement si la lampe prend en charge les couleurs ; le disque des blancs apparaît lorsqu'elle prend en charge le réglage de température. Avec le pointeur, choisir une position puis **Appliquer** ; avec les flèches, appuyer sur **OK** pour régler le disque, déplacer le curseur et appuyer à nouveau sur **OK**. La lampe suit les déplacements en direct. **Retour** ou **Annuler** rétablit son état précédent ; si l'application est interrompue, elle propose de le rétablir à sa prochaine ouverture. Les couleurs visibles à l'écran restent indicatives et la température est limitée à la plage propre à chaque lampe.
+
+La restauration dépend de la connexion au pont et à la lampe ; l'application signale si elle ne peut pas la confirmer. Depuis l'écran principal, appuyer deux fois sur **Retour** pour afficher la confirmation de sortie.
 
 Les lampes non joignables sont signalées. Une commande générale tente les autres lampes et indique les échecs éventuels. Les scènes existantes peuvent être activées et une nouvelle ambiance statique peut enregistrer l'état des lampes d'une pièce. L'enregistrement est refusé si une lampe est injoignable ou si un effet ne peut pas être conservé ; une scène statique ne reproduit pas les animations dynamiques.
 
